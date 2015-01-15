@@ -1,0 +1,56 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#808080"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="com.avatar.notable.MainActivity" >
+
+    
+    
+        <ImageView
+        android:id="@+id/newitem"
+        android:layout_height="60dp"
+        android:layout_width="60dp"
+        android:src="@drawable/newitem"
+        android:layout_gravity="center_vertical"
+        android:scaleType="fitXY"/>
+        
+   
+   
+    <RelativeLayout 
+        android:id="@+id/newnote"
+        android:orientation="vertical"
+        android:layout_height="wrap_content"
+        android:layout_width="fill_parent"
+        android:layout_below="@id/newitem"
+        >
+               
+        
+    </RelativeLayout>
+    
+    <ScrollView
+  
+  android:layout_width="match_parent"
+  android:layout_height="match_parent">
+    
+    
+    <!-- dont change to wrap context, if u need to change gravity from code -->
+      
+    <RelativeLayout 
+        android:id="@+id/existingnotes"
+        android:layout_width="fill_parent" 
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        
+    >
+    </RelativeLayout>
+    
+    
+    </ScrollView>
+
+</LinearLayout>
