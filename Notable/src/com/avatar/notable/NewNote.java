@@ -3,11 +3,18 @@ package com.avatar.notable;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import android.app.Activity;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.TextView.OnEditorActionListener;
 
 public class NewNote extends Activity {
 	NotesDbOperations db=new NotesDbOperations(this);
@@ -19,8 +26,33 @@ public class NewNote extends Activity {
 	{super.onCreate(savedInstanceState);
 	setContentView(R.layout.newnote);
 	//EditText textTitle=(EditText)findViewById(R.id.NoteTitle);
-	//EditText textBody=(EditText)findViewById(R.id.NoteSubject);
+	EditText textBody=(EditText)findViewById(R.id.NoteSubject);
 	
+	
+	textBody.setOnEditorActionListener(new OnEditorActionListener()
+	{@Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+		
+		
+		
+		System.out.println("unicode char : "+actionId);
+		 if (actionId == EditorInfo.IME_ACTION_DONE)
+		     {	
+        	
+		    //Toast.makeText(getApplicationContext(),"done pressed",Toast.LENGTH_SHORT).show();
+		    InputMethodManager imm=((InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE));
+		    imm.toggleSoftInput(InputMethodManager.HIDE_IMPLICIT_ONLY, 0);
+		    EditText text=(EditText)findViewById(R.id.NoteSubject);
+		    imm.hideSoftInputFromWindow(text.getWindowToken(), 0);
+		   
+		    				   
+		    return true;  // So it is not propagated.
+		}
+		 			    	 
+					
+		return false;
+	
+	}});
 	
 	}
 	
@@ -42,7 +74,7 @@ public class NewNote extends Activity {
         	{if(title.length()==0) mastertable.setNoteTitle("Title");
         	mastertable.setNoteBody(body);
         	//mastertable.setId(index);
-        	if(db.addNote(mastertable)) System.out.println("adding failed ");
+        	if(!db.addNote(mastertable)) System.out.println("adding failed ");
         	else System.out.println("added successfully");}
         
         db.close();
@@ -62,6 +94,10 @@ public class NewNote extends Activity {
 		// TODO Auto-generated method stub
 		super.finish();
 	}
+	
+	
+	
+	
 }
 
 

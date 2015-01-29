@@ -46,7 +46,7 @@ public class NotesDbOperations extends SQLiteOpenHelper {
 		@Override
 		public void onCreate(SQLiteDatabase db) {
 			System.out.println("Creating new table");
-			String CREATE_MASTER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_MASTER + "("+ TITLE + " STRING PRIMARY KEY," + BODY + " STRING UNIQUE NOT NULL"+")";
+			String CREATE_MASTER_TABLE = "CREATE TABLE IF NOT EXISTS " + TABLE_MASTER + "("+ TITLE + " STRING ," + BODY + " STRING PRIMARY KEY"+")";
 			db.execSQL(CREATE_MASTER_TABLE);
 			
 		}
@@ -64,24 +64,16 @@ public class NotesDbOperations extends SQLiteOpenHelper {
 			SQLiteDatabase db = this.getWritableDatabase();
 			System.out.println("adding process");
 			ContentValues values = new ContentValues();
-			//values.put(KEY_ID, mastertable.getId());
-			//String INSERT_TABLE="INSERT INTO "+ TABLE_MASTER +" VALUES ("+mastertable.getNoteTitle()+","+mastertable.getNoteBody()+")";
 			
-			//db.execSQL(INSERT_TABLE);
-			//values.put(ID,mastertable.getId());
 			values.put(TITLE, mastertable.getNoteTitle());
 			values.put(BODY, mastertable.getNoteBody()); 
 			//values.put(ID,mastertable.getId());*/
 			System.out.println(" values= "+mastertable.getNoteBody());
 						
 			
-			//Closing database connection
-			
-			
-			
 			// Inserting Row
 			try{ db.insertOrThrow(TABLE_MASTER,null,values);}
-            catch(Exception e) {System.out.println("exception : "+e.toString());db.close();return false;}
+            catch(Exception e) {System.out.println("add note exception : "+e.toString());db.close();return false;}
 			db.close();
 			return flag;
 			}
@@ -98,6 +90,8 @@ public class NotesDbOperations extends SQLiteOpenHelper {
 			// Select All Query
 			String selectQuery = "SELECT  * FROM " + TABLE_MASTER;
 			Cursor cursor = db.rawQuery(selectQuery, null);
+			
+			System.out.println("cursor count :"+cursor.getCount());
 			
 			// looping through all rows and adding to list
 			try{

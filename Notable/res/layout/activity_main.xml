@@ -14,24 +14,17 @@
     
         <ImageView
         android:id="@+id/newitem"
-        android:layout_height="60dp"
-        android:layout_width="60dp"
-        android:src="@drawable/newitem"
+        android:layout_height="40sp"
+        android:layout_width="30sp"
+        android:layout_marginLeft="10sp"
+        android:layout_marginBottom="20sp"
+        android:src="@drawable/newnote"
         android:layout_gravity="center_vertical"
         android:scaleType="fitXY"/>
         
    
    
-    <RelativeLayout 
-        android:id="@+id/newnote"
-        android:orientation="vertical"
-        android:layout_height="wrap_content"
-        android:layout_width="fill_parent"
-        android:layout_below="@id/newitem"
-        >
-               
-        
-    </RelativeLayout>
+    
     
     <ScrollView
   
@@ -39,10 +32,13 @@
   android:layout_height="match_parent">
     
     
-    <!-- dont change to wrap context, if u need to change gravity from code -->
+    <!-- dont change to wrap content, if u need to change gravity from code -->
       
     <RelativeLayout 
-        android:id="@+id/existingnotes"
+        android:id="@+id/notes"
+        android:paddingTop="10sp"
+        
+        
         android:layout_width="fill_parent" 
         android:layout_height="wrap_content"
         android:orientation="vertical"

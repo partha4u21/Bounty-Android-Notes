@@ -243,9 +243,10 @@ int drawable abc_textfield_searchview_right_holo_dark 0x7f020055
 int drawable abc_textfield_searchview_right_holo_light 0x7f020056
 int drawable ic_launcher 0x7f020057
 int drawable newitem 0x7f020058
-int id Note 0x7f05003f
-int id NoteSubject 0x7f050041
-int id NoteTitle 0x7f050040
+int drawable newnote 0x7f020059
+int id Note 0x7f05003e
+int id NoteSubject 0x7f050040
+int id NoteTitle 0x7f05003f
 int id action_bar 0x7f05001c
 int id action_bar_activity_content 0x7f050015
 int id action_bar_container 0x7f05001b
@@ -257,7 +258,7 @@ int id action_context_bar 0x7f05001d
 int id action_menu_divider 0x7f050016
 int id action_menu_presenter 0x7f050017
 int id action_mode_close_button 0x7f050024
-int id action_settings 0x7f050042
+int id action_settings 0x7f050041
 int id activity_chooser_view_content 0x7f050025
 int id always 0x7f05000b
 int id beginning 0x7f050011
@@ -269,7 +270,6 @@ int id disableHome 0x7f050008
 int id dropdown 0x7f05000f
 int id edit_query 0x7f050030
 int id end 0x7f050013
-int id existingnotes 0x7f05003e
 int id expand_activities_button 0x7f050026
 int id expanded_menu 0x7f05002c
 int id home 0x7f050014
@@ -282,9 +282,9 @@ int id list_item 0x7f050029
 int id middle 0x7f050012
 int id never 0x7f050009
 int id newitem 0x7f05003c
-int id newnote 0x7f05003d
 int id none 0x7f050010
 int id normal 0x7f050000
+int id notes 0x7f05003d
 int id progress_circular 0x7f050018
 int id progress_horizontal 0x7f050019
 int id radio 0x7f05002f
