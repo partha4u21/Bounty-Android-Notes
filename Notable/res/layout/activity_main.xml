@@ -27,26 +27,41 @@
     
     
     <ScrollView
-  
+  android:id="@+id/scroll"
   android:layout_width="match_parent"
-  android:layout_height="match_parent">
+  android:layout_height="wrap_content"
+  android:fillViewport="false"
+
+  
+  >
+  
     
-    
-    <!-- dont change to wrap content, if u need to change gravity from code -->
-      
-    <RelativeLayout 
+    <LinearLayout
+         android:layout_width="match_parent"
+         android:layout_height="wrap_content"
+         android:id="@+id/innerlinear"
+         
+         android:orientation="vertical"
+         >     
+        
+        <!-- dont change to linear layout,keep it relative -->
+        <RelativeLayout 
         android:id="@+id/notes"
         android:paddingTop="10sp"
-        
-        
-        android:layout_width="fill_parent" 
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent" 
+        android:layout_height="match_parent"
+       
         android:orientation="vertical"
         
-    >
-    </RelativeLayout>
+        
+        >
     
-    
+            
+    	</RelativeLayout>
+   
+
+  </LinearLayout>  
+   
     </ScrollView>
 
 </LinearLayout>

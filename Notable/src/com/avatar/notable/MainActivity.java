@@ -21,10 +21,14 @@ import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import android.view.ViewManager;
 import android.view.animation.Animation;
+import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
+import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView.AdapterContextMenuInfo;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,10 +44,17 @@ import android.widget.Toast;
 	static int lastNewNote;
 	float yCoordinate;
 	int lastViewAlign=0;  // 0 is left, 1 is right
-
 	
+	static int waitTime=1200;
+
+	static List<float[]> position=new ArrayList<float[]>();
+	static float[] pos;
 	static float firstX=0,firstY=0,secondX=0,secondY=0;
 	
+	
+	//Animation anim;
+	TranslateAnimation animSlide;
+	AnimationSet allAnim=new AnimationSet(true);
 	
 	
     @Override
@@ -52,6 +63,7 @@ import android.widget.Toast;
         setContentView(R.layout.activity_main);
         NotesDbOperations db=new NotesDbOperations(this);
         list=db.getAllNotes();
+        
         
        
         
@@ -133,6 +145,8 @@ import android.widget.Toast;
 	   
 	   list=db.getAllNotes();
 	   RelativeLayout notelay=(RelativeLayout) findViewById(R.id.notes);
+	   
+	   
 	   notelay.removeAllViews();
 	   
 	   System.out.println("list size : "+list.size());
@@ -158,14 +172,14 @@ import android.widget.Toast;
 			System.out.println("title : "+noteTitle);
 			System.out.println("body : "+noteBody);
 			
+			
 			noteMaker(noteTitle,noteBody,idVar);
 			
 			}
 		}
-			
-			
-		
-		
+	   
+	  
+	 
 		
 	   lastNewNote=idVar;
 	   	   
@@ -184,6 +198,7 @@ import android.widget.Toast;
 	   
 	   
 	   System.out.println("firstX : "+firstX+" : firstY : "+firstY);
+	 
 	   
 	   
 	  if(bodyParams.length()>0 )
@@ -213,6 +228,7 @@ import android.widget.Toast;
 	   
 	   final TextView title = new TextView(getApplicationContext()),body=new TextView(getApplicationContext());
 	   RelativeLayout notelay=(RelativeLayout) findViewById(R.id.notes);
+	      
 	   registerForContextMenu(body);
 	   
 	   System.out.println("magiclength "+getLongestString(bodyParams)+" : "+getTextLength(getLongestString(bodyParams)));
@@ -229,15 +245,15 @@ import android.widget.Toast;
 	   
 	   if(getTextLength(getLongestString(bodyParams))<=noteWidth)
 	   		{textFont=(int)(getTextLength(getLongestString(bodyParams))*0.2);
-	   		if(textFont<=20) {textFont=30;System.out.println("magiclength avatar : "+bodyParams+" : "+textFont);}
+	   		if(textFont<20) {textFont=25;System.out.println("magiclength avatar : "+bodyParams+" : "+textFont);}
 	   		}
-	   else {textFont=20;System.out.println("magiclength avatar : "+bodyParams+" : "+textFont);}
+	   else {textFont=28;System.out.println("magiclength avatar : "+bodyParams+" : "+textFont);}
 	   
 	   
 	   if(bodyParams!=null)
 	   {
 	   RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(noteWidth,LayoutParams.WRAP_CONTENT);
-	   
+	   //
 	   
 	   
 	   title.setText(bodyParams);
@@ -249,8 +265,8 @@ import android.widget.Toast;
 	  
 	   
 	   //notelay.addView(title, params);
-	   body.setBackgroundColor(Color.parseColor("#FFFFFF"));
-	   body.setPadding(5, 5,5,5);
+	   //body.setBackgroundColor(Color.parseColor("#50FFFFFF"));
+	   body.setPadding(5,5,5,5);
 	   
 	   
 	   
@@ -263,57 +279,119 @@ import android.widget.Toast;
 	   
 	   
 	   
-		   {if(index==list.size()-1) {params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);lastViewAlign=0; //0 for left
+		   {if(index==(list.size()-1)) {params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+			   					lastViewAlign=0; //0 for left
 	   							firstX=0;firstY=0;
-	   							
-	   							System.out.println("notey : first :"+firstX+" : firstY : "+firstY);}
-		   else if(index==list.size()-2) {params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT); lastViewAlign=1; //1 for right
-		   						secondX=noteWidth+10;
-		   						
+	   							pos=new float[]{firstX,firstY};
+	   							System.out.println("indexhack : "+index);
+	   							position.add(pos);
+	   							System.out.println("poschk : "+pos[0]+":"+pos[1]);
+	   							animSlide = new TranslateAnimation(0,0,0,0);
+	   							//body.setBackgroundColor(Color.parseColor("#70FF0000"));
+	   							System.out.println("indexhack notey : first :"+firstX+" : firstY : "+firstY);
+	   							System.out.println("cool : firstleft");
+	   							}
+		   else if(index==list.size()-2) {
+			   					
+			   					lastViewAlign=1; //1 for right
+			   					secondX=noteWidth+10;
+			   				
+			   					//body.setBackgroundColor(Color.parseColor("#7000FF00"));
+		   						animSlide =  new TranslateAnimation(0,secondX,0,0);
 		   						secondY=0;
-		   						System.out.println("notey : second :"+secondX+" : secondY : "+secondY);}
+		   						pos=new float[]{secondX,secondY};
+		   						System.out.println("indexhack : "+index);
+		   						position.add(pos);
+		   						System.out.println("poschk : "+pos[0]+":"+pos[1]);
+		   						System.out.println("indexhack notey : second :"+secondX+" : secondY : "+secondY);
+		   						System.out.println("cool : firstright");
+		   					   }
 		   else if(index<=list.size()-3)
 	   				{if(firstY<=secondY) 
-		   					{//params.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
-	   						lastViewAlign=0;
-	   						params.leftMargin=0;
-	   						
-		   					params.topMargin=(int)firstY+10;
+		   						{
+	   							lastViewAlign=0;
+	   							
+		   					//body.setBackgroundColor(Color.parseColor("#700000FF"));
+		   					
+		   					
+		   					if((index+1)<position.size() && position.get(index+1)!=null)
+		   					{animSlide = new TranslateAnimation(position.get(index+1)[0],0,position.get(index+1)[1],firstY);
+		   					System.out.println("indexhack : "+index);
+		   					}
+		   					pos=new float[]{0f,firstY+10};
 		   					firstY=firstY+10;
-		   					System.out.println("notey : first : "+firstY);
+		   					System.out.println("poschk : "+pos[0]+":"+pos[1]);
+		   					
+		   					if(index<position.size() && position.get(index)!=null)
+		   					position.set(index,pos);
+		   					else position.add(pos);
+		   					
+		   					
+		   					System.out.println("indexhack notey : first : "+firstY);
+		   					System.out.println("cool : left : "+index);
 		   					}
 	   				else if(firstY>secondY) 
-	   						{//params.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+	   						{
 	   						lastViewAlign=1;
 	   						
-	   						params.leftMargin=noteWidth+10;
-	   						params.topMargin=(int)secondY+10;
+	   						//body.setBackgroundColor(Color.parseColor("#700000FF"));
+	   						
+	   						
+	   						if((index+1)<position.size() && position.get(index+1)!=null)
+	   						{animSlide = new TranslateAnimation(position.get(index+1)[0],noteWidth+10,position.get(index+1)[1],secondY+10);
+	   						System.out.println("indexhack : "+index);}
+	   						
+	   						pos=new float[]{noteWidth+10,secondY};
 	   						secondY=secondY+10;
-		   					System.out.println("notey : second : "+secondY);
-		   					}
+	   						System.out.println("poschk : "+pos[0]+":"+pos[1]);
+	   						firstY=firstY+10;
+	   						if(index<position.size() && position.get(index)!=null)
+	   						position.set(index,pos);
+	   						else position.add(pos);
+	   						
+		   					System.out.println("indexhack notey : second : "+secondY);
+		   					System.out.println("cool : right : "+index);
+	   						}
 	   				}
+	   				
+	   				
 		   }
 		   
+		   int a=0;
+		   for(a=0;a<position.size();a++)
+		   System.out.println("positioncheck :"+position.get(a)[0]+":"+position.get(a)[1]);
+		  
+		   
+		   
+		   animSlide.setFillAfter(true); 
 	   
+		   
+		   
+		   body.setBackgroundColor(Color.parseColor("#FFFFFF"));
 	   
-	   body.setLayoutParams(params);
-	   notelay.addView(body,params);
+		   notelay.addView(body,params);
+	 
 	   
-	   //dont change the measure spec params from at_most and the notewidth. views may overlap in the main screen
+	   animSlide.setDuration(750);
+	   
+       body.startAnimation(animSlide);	   
+	   
+       //dont change the measure spec params from at_most and the notewidth. views may overlap in the main screen
 	   body.measure(MeasureSpec.makeMeasureSpec(noteWidth,MeasureSpec.AT_MOST),MeasureSpec.makeMeasureSpec(0,MeasureSpec.UNSPECIFIED));  //this is a forced measure ; runnable was not used since sharing variables from runnable didnt work
-	   if (lastViewAlign==0) {firstY=firstY+body.getMeasuredHeight();System.out.println("bodyYfirst :"+body.getMeasuredHeight()+" : "+bodyParams);}
-	   else if(lastViewAlign==1) {secondY=secondY+body.getMeasuredHeight();System.out.println("bodyYsecond :"+body.getMeasuredHeight()+" : "+bodyParams);}
+	   if (lastViewAlign==0) {
+		   firstY=firstY+body.getMeasuredHeight();System.out.println("bodyYfirst :"+body.getMeasuredHeight()+" : "+bodyParams);}
+	   else if(lastViewAlign==1) {
+		secondY=secondY+body.getMeasuredHeight();System.out.println("bodyYsecond :"+body.getMeasuredHeight()+" : "+bodyParams);}
 
-	   
-	   	   
-	   
-       Animation animRotate = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.rotate);
-       Animation animSlide = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.slideup);
-       body.startAnimation(animRotate);
-       body.startAnimation(animSlide);
+       
 	   
 	   
+	   //setting the minimum width is important , but tricky . without the minimum width , the layout will fallback to wrap content behaviour
+	   notelay.getLayoutParams().height=(int) secondY+100;
 	   
+	   //body.requestLayout();
+	  
+      	   
 	   }  
 		   }
 	   
